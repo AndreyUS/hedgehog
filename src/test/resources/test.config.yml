@@ -1,0 +1,25 @@
+logging:
+  level: INFO
+  loggers:
+    com.hummingbird: DEBUG
+  appenders:
+    - type: console
+
+swagger:
+  resourcePackage: com.usanin.andrew
+  title: hedgehog-project
+
+database:
+  driverClass: org.h2.Driver
+  user: sa
+  password: sa
+  url: jdbc:h2:mem:testdb
+
+liqui:
+  baseUrl: "http://api.liqui.io/api/3/"
+  httpClient:
+      timeout: 35000ms
+      connectionTimeout: 35000ms
+      gzipEnabled: false
+      gzipEnabledForRequests: false
+      chunkedEncodingEnabled: false

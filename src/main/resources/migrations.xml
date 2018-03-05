@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="andrewusanin">
+
+        <comment>Create orders table</comment>
+
+        <sql>
+            <![CDATA[
+                CREATE SEQUENCE orders_ord_rid_seq START WITH 1 INCREMENT BY 1;
+
+                CREATE TABLE orders (
+                    ord_rid         BIGINT DEFAULT NEXTVAL('orders_ord_rid_seq') NOT NULL,
+                    ord_tid         BIGINT NOT NULL,
+                    ord_type        VARCHAR NOT NULL,
+                    ord_price        NUMERIC NOT NULL,
+                    ord_amount      NUMERIC NOT NULL,
+                    ord_currency_pair      VARCHAR NOT NULL,
+                    ord_created_ts  TIMESTAMP NOT NULL DEFAULT NOW(),
+                    ord_updated_ts  TIMESTAMP NOT NULL DEFAULT NOW(),
+                    ord_traded_ts TIMESTAMP NOT NULL,
+
+                    CONSTRAINT pk_ord_rid PRIMARY KEY (ord_rid),
+                    CONSTRAINT uc_ord_tid UNIQUE (ord_tid),
+                    CONSTRAINT "orders_currency_pair_lower_check"
+                                            CHECK (ord_currency_pair = lower(ord_currency_pair))
+                    );
+
+                    CREATE INDEX idx_ord_currency_pair_traded_ts ON orders (ord_currency_pair, ord_traded_ts);
+
+                ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
